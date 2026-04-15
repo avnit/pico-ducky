@@ -196,6 +196,12 @@ def replaceBooleans(text):                             #< fix capitalization mis
     text = re.sub(r'[Ff][Aa][Ll][Ss][Ee]', 'False', text)
     return text
 
+def is_safe_expression(expression):
+    if re.search(r'__|import|exec|eval|open|os|sys|subprocess|socket|shlex|inspect|compile|globals|locals|getattr|setattr|delattr|class|lambda', expression, re.IGNORECASE):
+        return False
+    return re.match(r'^[0-9A-Za-z\s\.\+\-\*\/\%\(\)<>=!&\|\^,\'\"]+$', expression) is not None
+
+
 def evaluateExpression(expression):
     """Evaluates an expression with variables and returns the result."""
     expression = replaceVariables(expression)
@@ -209,7 +215,9 @@ def evaluateExpression(expression):
     expression = expression.replace("TRUE", "True")
     expression = expression.replace("FALSE", "False")
 
-    return eval(expression, {}, variables)
+    if not is_safe_expression(expression):
+        raise ValueError("Unsafe expression")
+    return eval(expression, {'__builtins__': {}}, {})
 
 def deepcopy(List):
     return(List[:])
@@ -266,150 +274,174 @@ def replaceDefines(line):
         line = line.replace(define, value)
     return line
 
-async def parseLine(line, script_lines):
-    global defaultDelay, variables, functions, defines
-    line = line.strip()
-    line = line.replace("$_RANDOM_INT", str(random.randint(int(variables.get("$_RANDOM_MIN", 0)), int(variables.get("$_RANDOM_MAX", 65535)))))
-    line = replaceDefines(line)
-    if line[:10] == "INJECT_MOD":
-        line = line[11:]
-    elif line.startswith("REM_BLOCK"):
-        while line.startswith("END_REM") == False:
-            line = next(script_lines).strip()
-            # print(line)
-    elif(line[0:3] == "REM"):
-        pass
-    elif line.startswith("HOLD"):
-        # HOLD command to press and hold a key
-        key = line[5:].strip().upper()
-        commandKeycode = duckyKeys.get(key, None)
-        if commandKeycode:
-            kbd.press(commandKeycode)
+async def _handle_inject_mod(line, script_lines):
+    return script_lines
 
-        else:
-            print(f"Unknown key to HOLD: <{key}>")
-    elif line.startswith("RELEASE"):
-        # RELEASE command to release a held key
-        key = line[8:].strip().upper()
-        commandKeycode = duckyKeys.get(key, None)
-        if commandKeycode:
-            kbd.release(commandKeycode)
-        else:
-            print(f"Unknown key to RELEASE: <{key}>")
-    elif(line[0:5] == "DELAY"):
-        line = replaceVariables(line)
-        await asyncio.sleep(float(line[6:])/1000)
-    elif line == "STRINGLN":               #< stringLN block
+async def _handle_rem_block(line, script_lines):
+    while not line.startswith("END_REM"):
+        line = next(script_lines).strip()
+    return script_lines
+
+async def _handle_rem(line, script_lines):
+    return script_lines
+
+async def _handle_hold(line, script_lines):
+    key = line[5:].strip().upper()
+    commandKeycode = duckyKeys.get(key, None)
+    if commandKeycode:
+        kbd.press(commandKeycode)
+    else:
+        print(f"Unknown key to HOLD: <{key}>")
+    return script_lines
+
+async def _handle_release(line, script_lines):
+    key = line[8:].strip().upper()
+    commandKeycode = duckyKeys.get(key, None)
+    if commandKeycode:
+        kbd.release(commandKeycode)
+    else:
+        print(f"Unknown key to RELEASE: <{key}>")
+    return script_lines
+
+async def _handle_delay(line, script_lines):
+    line = replaceVariables(line)
+    await asyncio.sleep(float(line[6:]) / 1000)
+    return script_lines
+
+async def _handle_stringln(line, script_lines):
+    if line == "STRINGLN":
         line = next(script_lines).strip()
         line = replaceVariables(line)
-        while line.startswith("END_STRINGLN") == False:
+        while not line.startswith("END_STRINGLN"):
             sendString(line)
             kbd.press(Keycode.ENTER)
             kbd.release(Keycode.ENTER)
             line = next(script_lines).strip()
             line = replaceVariables(line)
             line = replaceDefines(line)
-    elif(line[0:8] == "STRINGLN"):
+    else:
         sendString(replaceVariables(line[9:]))
         kbd.press(Keycode.ENTER)
         kbd.release(Keycode.ENTER)
-    elif line == "STRING":                 #< string block
+    return script_lines
+
+async def _handle_string(line, script_lines):
+    if line == "STRING":
         line = next(script_lines).strip()
         line = replaceVariables(line)
-        while line.startswith("END_STRING") == False:
+        while not line.startswith("END_STRING"):
             sendString(line)
             line = next(script_lines).strip()
             line = replaceVariables(line)
             line = replaceDefines(line)
-    elif(line[0:6] == "STRING"):
+    else:
         sendString(replaceVariables(line[7:]))
-    elif(line[0:5] == "PRINT"):
-        line = replaceVariables(line[6:])
-        print("[SCRIPT]: " + line)
-    elif(line[0:6] == "IMPORT"):
-        runScript(line[7:])
-    elif(line[0:13] == "DEFAULT_DELAY"):
+    return script_lines
+
+async def _handle_print(line, script_lines):
+    line = replaceVariables(line[6:])
+    print("[SCRIPT]: " + line)
+    return script_lines
+
+async def _handle_import(line, script_lines):
+    runScript(line[7:])
+    return script_lines
+
+async def _handle_default_delay(line, script_lines):
+    global defaultDelay
+    if line.startswith("DEFAULT_DELAY"):
         defaultDelay = int(line[14:]) * 10
-    elif(line[0:12] == "DEFAULTDELAY"):
+    else:
         defaultDelay = int(line[13:]) * 10
-    elif(line[0:3] == "LED"):
-        if(led.value == True):
-            led.value = False
-        else:
-            led.value = True
-    elif(line[0:3] == "LED"):
-        if(led.value == True):
-            led.value = False
-        else:
-            led.value = True
-    elif(line[:7] == "LED_OFF"):
+    return script_lines
+
+async def _handle_led(line, script_lines):
+    if led.value == True:
         led.value = False
-    elif(line[:5] == "LED_R"):
+    else:
         led.value = True
-    elif(line[:5] == "LED_G"):
-        led.value = True
-    elif(line[0:21] == "WAIT_FOR_BUTTON_PRESS"):
-        button_pressed = False
-        # NOTE: we don't use assincio in this case because we want to block code execution
-        while not button_pressed:
-            button1.update()
+    return script_lines
 
-            button1Pushed = button1.fell
-            button1Released = button1.rose
-            button1Held = not button1.value
+async def _handle_led_off(line, script_lines):
+    led.value = False
+    return script_lines
 
-            if(button1Pushed):
-                print("Button 1 pushed")
-                button_pressed = True
-    elif line.startswith("VAR"):
-        match = re.match(r"VAR\s+\$(\w+)\s*=\s*(.+)", line)
-        if match:
-            varName = f"${match.group(1)}"
-            value = evaluateExpression(match.group(2))
-            variables[varName] = value
-        else:
-            raise SyntaxError(f"Invalid variable declaration: {line}")
-    elif line.startswith("$"):
-        match = re.match(r"\$(\w+)\s*=\s*(.+)", line)
-        if match:
-            varName = f"${match.group(1)}"
-            expression = match.group(2)
-            value = evaluateExpression(expression)
-            variables[varName] = value
+async def _handle_led_on(line, script_lines):
+    led.value = True
+    return script_lines
 
-        else:
-            raise SyntaxError(f"Invalid variable update, declare variable first: {line}")
-    elif line.startswith("DEFINE"):
-        defineLocation = line.find(" ")
-        valueLocation = line.find(" ", defineLocation + 1)
-        defineName = line[defineLocation+1:valueLocation]
-        defineValue = line[valueLocation+1:]
-        defines[defineName] = defineValue
-    elif line.startswith("FUNCTION"):
-        # print("ENTER FUNCTION")
-        func_name = line.split()[1]
-        functions[func_name] = []
+async def _handle_wait_for_button_press(line, script_lines):
+    button_pressed = False
+    while not button_pressed:
+        button1.update()
+
+        button1Pushed = button1.fell
+        button1Released = button1.rose
+        button1Held = not button1.value
+
+        if button1Pushed:
+            print("Button 1 pushed")
+            button_pressed = True
+    return script_lines
+
+async def _handle_var(line, script_lines):
+    match = re.match(r"VAR\s+\$(\w+)\s*=\s*(.+)", line)
+    if match:
+        varName = f"${match.group(1)}"
+        value = evaluateExpression(match.group(2))
+        variables[varName] = value
+    else:
+        raise SyntaxError(f"Invalid variable declaration: {line}")
+    return script_lines
+
+async def _handle_variable_update(line, script_lines):
+    match = re.match(r"\$(\w+)\s*=\s*(.+)", line)
+    if match:
+        varName = f"${match.group(1)}"
+        expression = match.group(2)
+        value = evaluateExpression(expression)
+        variables[varName] = value
+    else:
+        raise SyntaxError(f"Invalid variable update, declare variable first: {line}")
+    return script_lines
+
+async def _handle_define(line, script_lines):
+    defineLocation = line.find(" ")
+    valueLocation = line.find(" ", defineLocation + 1)
+    defineName = line[defineLocation+1:valueLocation]
+    defineValue = line[valueLocation+1:]
+    defines[defineName] = defineValue
+    return script_lines
+
+async def _handle_function(line, script_lines):
+    func_name = line.split()[1]
+    functions[func_name] = []
+    line = next(script_lines).strip()
+    while line != "END_FUNCTION":
+        functions[func_name].append(line)
         line = next(script_lines).strip()
-        while line != "END_FUNCTION":
-            functions[func_name].append(line)
-            line = next(script_lines).strip()
-    elif line.startswith("WHILE"):
-        # print("ENTER WHILE LOOP")
-        condition = line[5:].strip()
-        loopCode = list(_getCodeBlock(script_lines))
-        while evaluateExpression(condition) == True:
-            currentIterCode = deepcopy(loopCode)
-            # print(loopCode)
-            while currentIterCode:
-                loopLine = currentIterCode.pop(0)
-                currentIterCode = list(parseLine(loopLine, iter(currentIterCode)))      #< very inefficient, should be replaced later.
+    return script_lines
 
-    elif line.upper().startswith("IF"):
-        script_lines, ret = IF(_getIfCondition(line), script_lines).runIf()
-        print(f"IF returned {ret} code")
-    elif line.upper().startswith("END_IF"):
-        pass
-    elif line == "RANDOM_LOWERCASE_LETTER":
+async def _handle_while(line, script_lines):
+    condition = line[5:].strip()
+    loopCode = list(_getCodeBlock(script_lines))
+    while evaluateExpression(condition) == True:
+        currentIterCode = deepcopy(loopCode)
+        while currentIterCode:
+            loopLine = currentIterCode.pop(0)
+            currentIterCode = list(parseLine(loopLine, iter(currentIterCode)))
+    return script_lines
+
+async def _handle_if(line, script_lines):
+    script_lines, ret = IF(_getIfCondition(line), script_lines).runIf()
+    print(f"IF returned {ret} code")
+    return script_lines
+
+async def _handle_end_if(line, script_lines):
+    return script_lines
+
+async def _handle_exact_command(line, script_lines):
+    if line == "RANDOM_LOWERCASE_LETTER":
         sendString(random.choice(letters))
     elif line == "RANDOM_UPPERCASE_LETTER":
         sendString(random.choice(letters.upper()))
@@ -438,12 +470,62 @@ async def parseLine(line, script_lines):
         RestoreKeyboardLedState()
     elif line == "WAIT_FOR_SCROLL_CHANGE":
         last_scroll_state = _scrollOn()
-        while True: 
+        while True:
             current_scroll_state = _scrollOn()
             if current_scroll_state != last_scroll_state:
                 break
             await asyncio.sleep(0.01)
-    elif line in functions:
+    else:
+        return None
+    return script_lines
+
+async def parseLine(line, script_lines):
+    global defaultDelay, variables, functions, defines
+    line = line.strip()
+    line = line.replace("$_RANDOM_INT", str(random.randint(int(variables.get("$_RANDOM_MIN", 0)), int(variables.get("$_RANDOM_MAX", 65535)))))
+    line = replaceDefines(line)
+    prefix_handlers = [
+        ("INJECT_MOD", _handle_inject_mod),
+        ("REM_BLOCK", _handle_rem_block),
+        ("REM", _handle_rem),
+        ("HOLD", _handle_hold),
+        ("RELEASE", _handle_release),
+        ("DELAY", _handle_delay),
+        ("STRINGLN", _handle_stringln),
+        ("STRING", _handle_string),
+        ("PRINT", _handle_print),
+        ("IMPORT", _handle_import),
+        ("DEFAULT_DELAY", _handle_default_delay),
+        ("DEFAULTDELAY", _handle_default_delay),
+        ("LED_OFF", _handle_led_off),
+        ("LED_R", _handle_led_on),
+        ("LED_G", _handle_led_on),
+        ("LED", _handle_led),
+        ("WAIT_FOR_BUTTON_PRESS", _handle_wait_for_button_press),
+        ("VAR", _handle_var),
+        ("DEFINE", _handle_define),
+        ("FUNCTION", _handle_function),
+        ("WHILE", _handle_while),
+    ]
+
+    for prefix, handler in prefix_handlers:
+        if line.startswith(prefix):
+            return await handler(line, script_lines)
+
+    if line.startswith("$"):
+        return await _handle_variable_update(line, script_lines)
+
+    if line.upper().startswith("IF"):
+        return await _handle_if(line, script_lines)
+
+    if line.upper().startswith("END_IF"):
+        return await _handle_end_if(line, script_lines)
+
+    exact_handler_result = await _handle_exact_command(line, script_lines)
+    if exact_handler_result is not None:
+        return exact_handler_result
+
+    if line in functions:
         updated_lines = []
         inside_while_block = False
         for func_line in functions[line]:

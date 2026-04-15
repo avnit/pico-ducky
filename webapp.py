@@ -8,10 +8,13 @@ import time
 import os
 import storage
 import asyncio
+import re
+import base64
 
 import wsgiserver as server
 from adafruit_wsgi.wsgi_app import WSGIApp
 import wifi
+import secrets
 
 from duckyinpython import *
 
@@ -28,6 +31,49 @@ payload_html = """<html>
     </body>
 </html>
 """
+
+def is_valid_filename(filename):
+    if not filename:
+        return False
+    if "/" in filename or "\\" in filename or ".." in filename or filename.startswith("."):
+        return False
+    return re.match(r'^[A-Za-z0-9_.-]+$', filename) is not None
+
+
+def parse_form_data(body):
+    if isinstance(body, bytes):
+        body = body.decode('utf-8', 'ignore')
+    form_data = {}
+    for field in body.split('&'):
+        if '=' not in field:
+            continue
+        key, value = field.split('=', 1)
+        form_data[key] = value
+    return form_data
+
+
+def auth_required():
+    return (
+        '401 Unauthorized',
+        [('Content-Type', 'text/html'), ('WWW-Authenticate', 'Basic realm="Pico W Ducky"')],
+        '<h1>401 Unauthorized</h1>'
+    )
+
+
+def is_authenticated(request):
+    auth_header = ''
+    if hasattr(request, 'headers'):
+        auth_header = request.headers.get('Authorization', '')
+    elif hasattr(request, 'environ'):
+        auth_header = request.environ.get('HTTP_AUTHORIZATION', '')
+    if not auth_header or not auth_header.startswith('Basic '):
+        return False
+    try:
+        credential_bytes = base64.b64decode(auth_header.split(' ', 1)[1])
+        credentials = credential_bytes.decode('utf-8')
+    except Exception:
+        return False
+    return credentials == f"{secrets.WEB_UI_USERNAME}:{secrets.WEB_UI_PASSWORD}"
 
 edit_html = """<!DOCTYPE html>
 <html>
@@ -150,11 +196,17 @@ web_app = WSGIApp()
 
 @web_app.route("/ducky")
 def duck_main(request):
+    if not is_authenticated(request):
+        return auth_required()
     response = ducky_main(request)
     return("200 OK", [('Content-Type', 'text/html')], response)
 
 @web_app.route("/edit/<filename>")
 def edit(request, filename):
+    if not is_authenticated(request):
+        return auth_required()
+    if not is_valid_filename(filename):
+        return("400 Bad Request", [('Content-Type', 'text/html')], '<h1>Invalid filename</h1>')
     print("Editing ", filename)
     f = open(filename,"r",encoding='utf-8')
     textbuffer = ''
@@ -162,26 +214,21 @@ def edit(request, filename):
         textbuffer = textbuffer + line
     f.close()
     response = edit_html.format(filename,textbuffer)
-    #print(response)
 
     return("200 OK",[('Content-Type', 'text/html')], response)
 
 @web_app.route("/write/<filename>",methods=["POST"])
 def write_script(request, filename):
+    if not is_authenticated(request):
+        return auth_required()
+    if not is_valid_filename(filename):
+        return("400 Bad Request", [('Content-Type', 'text/html')], '<h1>Invalid filename</h1>')
 
-    data = request.body.getvalue()
-    fields = data.split("&")
-    form_data = {}
-    for field in fields:
-        key,value = field.split('=')
-        form_data[key] = value
-
-    #print(form_data)
+    form_data = parse_form_data(request.body.getvalue())
     storage.remount("/",readonly=False)
     f = open(filename,"w",encoding='utf-8')
-    textbuffer = form_data['scriptData']
+    textbuffer = form_data.get('scriptData', '')
     textbuffer = cleanup_text(textbuffer)
-    #print(textbuffer)
     for line in textbuffer.splitlines():
         f.write(line + '\n')
     f.close()
@@ -191,21 +238,19 @@ def write_script(request, filename):
 
 @web_app.route("/new",methods=['GET','POST'])
 def write_new_script(request):
+    if not is_authenticated(request):
+        return auth_required()
     response = ''
     if(request.method == 'GET'):
         response = new_html
     else:
-        data = request.body.getvalue()
-        fields = data.split("&")
-        form_data = {}
-        for field in fields:
-            key,value = field.split('=')
-            form_data[key] = value
-        #print(form_data)
-        filename = form_data['scriptName']
+        form_data = parse_form_data(request.body.getvalue())
+        filename = form_data.get('scriptName', '')
         if ".dd" not in filename:
             filename = filename + ".dd"
-        textbuffer = form_data['scriptData']
+        if not is_valid_filename(filename):
+            return("400 Bad Request", [('Content-Type', 'text/html')], '<h1>Invalid filename</h1>')
+        textbuffer = form_data.get('scriptData', '')
         textbuffer = cleanup_text(textbuffer)
         storage.remount("/",readonly=False)
         f = open(filename,"w",encoding='utf-8')
@@ -218,6 +263,10 @@ def write_new_script(request):
 
 @web_app.route("/delete/<filename>")
 def delete(request, filename):
+    if not is_authenticated(request):
+        return auth_required()
+    if not is_valid_filename(filename):
+        return("400 Bad Request", [('Content-Type', 'text/html')], '<h1>Invalid filename</h1>')
     print("Deleting ", filename)
     storage.remount("/",readonly=False)
     os.remove(filename)
@@ -227,14 +276,19 @@ def delete(request, filename):
 
 @web_app.route("/run/<filename>")
 async def run_script(request, filename):
+    if not is_authenticated(request):
+        return auth_required()
+    if not is_valid_filename(filename):
+        return("400 Bad Request", [('Content-Type', 'text/html')], '<h1>Invalid filename</h1>')
     print("run_script ", filename)
     response = response_html.format("Running script " + filename)
-    #print(response)
     await runScript(filename)
     return("200 OK",[('Content-Type', 'text/html')], response)
 
 @web_app.route("/")
 def index(request):
+    if not is_authenticated(request):
+        return auth_required()
     response = ducky_main(request)
     return("200 OK", [('Content-Type', 'text/html')], response)
 

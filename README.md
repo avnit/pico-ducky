@@ -134,6 +134,19 @@ API endpoints
 /api/run/<filenumber>
 ```
 
+## Advanced Features
+- `$_EXFIL_MODE_ENABLED`: enable exfiltration mode in scripts.
+- `$_EXFIL_LEDS_ENABLED`: enable LED signaling during exfiltration.
+- `loot.bin`: the file used to collect captured output when exfil mode is active.
+- `flash_nuke.uf2`: this is factory reset firmware for the Pico. Flashing it will wipe all storage on the device and should only be used when you want to erase the board completely.
+
+### Supported advanced DuckyScript commands
+- `HOLD`: press and hold a key until a future `RELEASE` command.
+- `RELEASE`: release a previously held key.
+- `WAIT_FOR_SCROLL_CHANGE`: pause until the host scroll lock state changes.
+- `SAVE_HOST_KEYBOARD_LOCK_STATE`: save the current host keyboard lock state.
+- `RESTORE_HOST_KEYBOARD_LOCK_STATE`: restore the saved host keyboard lock state.
+
 ## Setup mode
 
 To edit the payload, enter setup mode by connecting the pin 1 (`GP0`) to pin 3 (`GND`), this will stop the pico-ducky from injecting the payload in your own machine.
