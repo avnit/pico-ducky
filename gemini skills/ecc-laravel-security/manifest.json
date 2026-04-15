@@ -1,0 +1,6 @@
+{
+  "name": "laravel-security",
+  "description": "Laravel security best practices for authn/authz, validation, CSRF, mass assignment, file uploads, secrets, rate limiting, and secure deployment.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

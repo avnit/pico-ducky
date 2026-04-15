@@ -1,0 +1,6 @@
+{
+  "name": "acc-evaluate-repository",
+  "description": "Slash command - evaluate-repository",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

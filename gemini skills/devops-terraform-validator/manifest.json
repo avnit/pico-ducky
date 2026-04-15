@@ -1,0 +1,6 @@
+{
+  "name": "terraform-validator",
+  "description": "Validate, lint, audit, or plan Terraform/.tf/HCL files; runs tflint, checkov, terraform validate.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

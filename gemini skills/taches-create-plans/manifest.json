@@ -1,0 +1,6 @@
+{
+  "name": "create-plans",
+  "description": "Create hierarchical project plans optimized for solo agentic development. Use when planning projects, phases, or tasks that gemini will execute. Produces gemini-executable plans with verification criteria, not enterprise documentation. Handles briefs, roadmaps, phase plans, and context handoffs.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

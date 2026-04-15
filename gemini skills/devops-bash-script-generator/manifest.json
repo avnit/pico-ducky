@@ -1,0 +1,6 @@
+{
+  "name": "bash-script-generator",
+  "description": "Create, generate, write, or scaffold bash/shell scripts (.sh), automation, or CLI tools.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

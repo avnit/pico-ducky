@@ -1,0 +1,6 @@
+{
+  "name": "fluentbit-generator",
+  "description": "Generate/create Fluent Bit configs — INPUT, FILTER, OUTPUT, parsers, log pipeline.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

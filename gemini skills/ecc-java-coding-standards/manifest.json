@@ -1,0 +1,6 @@
+{
+  "name": "java-coding-standards",
+  "description": "Spring Bootサービス向けのJavaコーディング標準：命名、不変性、Optional使用、ストリーム、例外、ジェネリクス、プロジェクトレイアウト。",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

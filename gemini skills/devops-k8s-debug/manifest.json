@@ -1,0 +1,6 @@
+{
+  "name": "k8s-debug",
+  "description": "Diagnose and fix Kubernetes pods, CrashLoopBackOff, Pending, DNS, networking, storage, and rollout failures with kubectl.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "helm-validator",
+  "description": "Validate, lint, audit, check Helm charts — Chart.yaml, templates, values.yaml, CRDs, schemas.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

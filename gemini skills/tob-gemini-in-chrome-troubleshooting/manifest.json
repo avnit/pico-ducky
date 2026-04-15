@@ -1,0 +1,6 @@
+{
+  "name": "gemini-in-chrome-troubleshooting",
+  "description": "Diagnose and fix gemini in Chrome MCP extension connectivity issues. Use when mcp__gemini-in-chrome__* tools fail, return \"Browser extension is not connected\", or behave erratically.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

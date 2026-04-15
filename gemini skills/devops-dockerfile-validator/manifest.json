@@ -1,0 +1,6 @@
+{
+  "name": "dockerfile-validator",
+  "description": "Validate, lint, audit, or scan a Dockerfile for security and best practices.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

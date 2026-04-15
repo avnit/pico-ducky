@@ -1,0 +1,6 @@
+{
+  "name": "promql-validator",
+  "description": "Validate, lint, audit, or fix PromQL queries and alerting rules; detects anti-patterns.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

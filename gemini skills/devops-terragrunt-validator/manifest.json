@@ -1,0 +1,6 @@
+{
+  "name": "terragrunt-validator",
+  "description": "Validate, lint, audit, or check Terragrunt .hcl/terragrunt.hcl files, stacks, modules, compliance.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

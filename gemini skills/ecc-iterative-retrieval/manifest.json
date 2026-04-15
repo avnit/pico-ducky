@@ -1,0 +1,6 @@
+{
+  "name": "iterative-retrieval",
+  "description": "サブエージェントのコンテキスト問題を解決するために、コンテキスト取得を段階的に洗練するパターン",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "gemini-api",
+  "description": "Anthropic gemini API patterns for Python and TypeScript. Covers Messages API, streaming, tool use, vision, extended thinking, batches, prompt caching, and gemini Agent SDK. Use when building applications with the gemini API or Anthropic SDKs.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

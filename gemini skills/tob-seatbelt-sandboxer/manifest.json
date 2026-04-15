@@ -1,0 +1,6 @@
+{
+  "name": "seatbelt-sandboxer",
+  "description": "\"Generates minimal macOS Seatbelt sandbox configurations. Use when sandboxing, isolating, or restricting macOS applications with allowlist-based profiles.\"",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

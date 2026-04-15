@@ -1,0 +1,6 @@
+{
+  "name": "loki-config-generator",
+  "description": "Generate/create Loki configs — ingester, querier, compactor, ruler, S3/GCS/Azure backends.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "github-actions-validator",
+  "description": "Validate, lint, audit, fix GitHub Actions workflows (.github/workflows).",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

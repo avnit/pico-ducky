@@ -1,0 +1,6 @@
+{
+  "name": "continuous-learning-v2",
+  "description": "フックを介してセッションを観察し、信頼度スコアリング付きのアトミックなインスティンクトを作成し、スキル/コマンド/エージェントに進化させるインスティンクトベースの学習システム。",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

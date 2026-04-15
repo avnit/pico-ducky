@@ -1,0 +1,6 @@
+{
+  "name": "azure-pipelines-generator",
+  "description": "Generate/create/scaffold azure-pipelines.yml, stages, jobs, steps, or reusable templates.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

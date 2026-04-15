@@ -1,0 +1,6 @@
+{
+  "name": "secure-workflow-guide",
+  "description": "Guides through Trail of Bits' 5-step secure development workflow. Runs Slither scans, checks special features (upgradeability/ERC conformance/token integration), generates visual security diagrams, helps document security properties for fuzzing/verification, and reviews manual security areas.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

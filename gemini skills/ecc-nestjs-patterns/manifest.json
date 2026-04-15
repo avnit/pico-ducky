@@ -1,0 +1,6 @@
+{
+  "name": "nestjs-patterns",
+  "description": "NestJS architecture patterns for modules, controllers, providers, DTO validation, guards, interceptors, config, and production-grade TypeScript backends.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

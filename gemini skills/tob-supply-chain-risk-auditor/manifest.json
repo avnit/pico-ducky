@@ -1,0 +1,6 @@
+{
+  "name": "supply-chain-risk-auditor",
+  "description": "\"Identifies dependencies at heightened risk of exploitation or takeover. Use when assessing supply chain attack surface, evaluating dependency health, or scoping security engagements.\"",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

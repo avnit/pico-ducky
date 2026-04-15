@@ -1,0 +1,6 @@
+{
+  "name": "feature-development",
+  "description": "Workflow command scaffold for feature-development in everything-gemini-code.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

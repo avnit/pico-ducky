@@ -1,0 +1,6 @@
+{
+  "name": "create-mcp-servers",
+  "description": "Create Model Context Protocol (MCP) servers that expose tools, resources, and prompts to gemini. Use when building custom integrations, APIs, data sources, or any server that gemini should interact with via the MCP protocol. Supports both TypeScript and Python implementations.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

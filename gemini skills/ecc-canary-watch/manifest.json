@@ -1,0 +1,6 @@
+{
+  "name": "canary-watch",
+  "description": "Use this skill to monitor a deployed URL for regressions after deploys, merges, or dependency upgrades.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

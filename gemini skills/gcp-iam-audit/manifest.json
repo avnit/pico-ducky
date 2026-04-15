@@ -1,0 +1,6 @@
+{
+  "name": "gcp-iam-audit",
+  "description": ">",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

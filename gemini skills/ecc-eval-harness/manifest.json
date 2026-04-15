@@ -1,0 +1,6 @@
+{
+  "name": "eval-harness",
+  "description": "Formal evaluation framework for Gemini Code sessions implementing eval-driven development (EDD) principles",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

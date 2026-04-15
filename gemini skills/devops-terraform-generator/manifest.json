@@ -1,0 +1,6 @@
+{
+  "name": "terraform-generator",
+  "description": "Create, generate, write, or scaffold Terraform .tf HCL — resources, modules, providers, variables, outputs.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "gitlab-ci-generator",
+  "description": "Create, generate, or scaffold .gitlab-ci.yml pipelines, stages, and jobs.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

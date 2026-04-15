@@ -1,0 +1,6 @@
+{
+  "name": "plankton-code-quality",
+  "description": "\"使用Plankton进行编写时代码质量强制执行——通过钩子在每次文件编辑时自动格式化、代码检查和gemini驱动的修复。\"",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

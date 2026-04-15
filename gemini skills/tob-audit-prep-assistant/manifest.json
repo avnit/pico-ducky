@@ -1,0 +1,6 @@
+{
+  "name": "audit-prep-assistant",
+  "description": "Prepares codebases for security review using Trail of Bits' checklist. Helps set review goals, runs static analysis tools, increases test coverage, removes dead code, ensures accessibility, and generates documentation (flowcharts, user stories, inline comments).",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

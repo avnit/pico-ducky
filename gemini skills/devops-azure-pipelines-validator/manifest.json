@@ -1,0 +1,6 @@
+{
+  "name": "azure-pipelines-validator",
+  "description": "Validate, lint, audit, or review azure-pipelines.yml — syntax, security, best practices.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

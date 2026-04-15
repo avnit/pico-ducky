@@ -1,0 +1,6 @@
+{
+  "name": "makefile-generator",
+  "description": "Create, generate, or scaffold Makefiles with .PHONY targets and build automation.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

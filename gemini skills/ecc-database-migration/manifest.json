@@ -1,0 +1,6 @@
+{
+  "name": "database-migration",
+  "description": "Workflow command scaffold for database-migration in everything-gemini-code.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

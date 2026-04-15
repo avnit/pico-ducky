@@ -1,0 +1,8 @@
+interface:
+  display_name: "gemini API"
+  short_description: "Anthropic gemini API patterns and SDKs"
+  brand_color: "#D97706"
+  default_prompt: "Build applications with the gemini API using Messages, tool use, streaming, and Agent SDK"
+policy:
+  allow_implicit_invocation: true
+

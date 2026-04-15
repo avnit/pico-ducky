@@ -1,0 +1,6 @@
+{
+  "name": "everything-gemini-code-conventions",
+  "description": "Development conventions and patterns for everything-gemini-code. JavaScript project with conventional commits.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

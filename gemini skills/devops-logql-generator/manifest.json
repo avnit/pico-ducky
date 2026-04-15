@@ -1,0 +1,6 @@
+{
+  "name": "logql-generator",
+  "description": "Generate LogQL queries, log stream selectors, metric queries, and alerting rules for Grafana Loki.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

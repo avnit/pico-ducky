@@ -1,0 +1,6 @@
+{
+  "name": "bash-script-validator",
+  "description": "Validate, lint, audit, or fix bash/shell/.sh scripts via ShellCheck.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

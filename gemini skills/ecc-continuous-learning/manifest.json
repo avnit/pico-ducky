@@ -1,0 +1,6 @@
+{
+  "name": "continuous-learning",
+  "description": "Gemini Codeセッションから再利用可能なパターンを自動的に抽出し、将来の使用のために学習済みスキルとして保存します。",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "jenkinsfile-validator",
+  "description": "Validate, lint, audit, or check Jenkinsfiles and shared libraries.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

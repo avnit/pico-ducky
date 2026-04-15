@@ -1,0 +1,6 @@
+{
+  "name": "k8s-yaml-validator",
+  "description": "Validate, lint, audit, or dry-run Kubernetes manifests (Deployment, Service, ConfigMap, CRD).",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

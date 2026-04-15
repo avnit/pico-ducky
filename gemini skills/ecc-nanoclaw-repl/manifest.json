@@ -1,0 +1,6 @@
+{
+  "name": "nanoclaw-repl",
+  "description": "操作并扩展NanoClaw v2，这是ECC基于gemini -p构建的零依赖会话感知REPL。",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

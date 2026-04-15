@@ -1,0 +1,6 @@
+{
+  "name": "jenkinsfile-generator",
+  "description": "Generate/create/scaffold Jenkinsfile — declarative, scripted, shared library, CI/CD pipelines.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

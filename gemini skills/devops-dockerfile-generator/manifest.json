@@ -1,0 +1,6 @@
+{
+  "name": "dockerfile-generator",
+  "description": "Create, generate, or write Dockerfiles and multi-stage Docker images. Containerize apps.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

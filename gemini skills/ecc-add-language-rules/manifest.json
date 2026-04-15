@@ -1,0 +1,6 @@
+{
+  "name": "add-language-rules",
+  "description": "Workflow command scaffold for add-language-rules in everything-gemini-code.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

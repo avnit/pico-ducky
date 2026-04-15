@@ -1,0 +1,6 @@
+{
+  "name": "promql-generator",
+  "description": "Generate/create/write PromQL queries, metric expressions, alerting rules, recording rules, Prometheus dashboards.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

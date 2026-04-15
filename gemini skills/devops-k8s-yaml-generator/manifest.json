@@ -1,0 +1,6 @@
+{
+  "name": "k8s-yaml-generator",
+  "description": "Generate/create/scaffold Kubernetes YAML — Deployment, Service, ConfigMap, Ingress, RBAC, StatefulSet, CRDs.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

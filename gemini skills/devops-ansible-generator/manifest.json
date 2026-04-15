@@ -1,0 +1,6 @@
+{
+  "name": "ansible-generator",
+  "description": "Generate, create, or scaffold Ansible playbooks, roles, tasks, handlers, inventory, vars.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

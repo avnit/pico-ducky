@@ -1,0 +1,6 @@
+{
+  "name": "kotlin-testing",
+  "description": "Kotest, MockK, coroutine testi, property-based testing ve Kover coverage ile Kotlin test kalıpları. İdiomatic Kotlin uygulamalarıyla TDD metodolojisini takip eder.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

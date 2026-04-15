@@ -1,0 +1,6 @@
+{
+  "name": "configure-ecc",
+  "description": "Everything Gemini Code のインタラクティブなインストーラー — スキルとルールの選択とインストールをユーザーレベルまたはプロジェクトレベルのディレクトリへガイドし、パスを検証し、必要に応じてインストールされたファイルを最適化します。",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

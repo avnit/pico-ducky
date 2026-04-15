@@ -1,0 +1,6 @@
+{
+  "name": "the-pirate-bay",
+  "description": "Search The Pirate Bay for torrents and extract magnet links via the apibay.org JSON API. Use when asked to \"find a torrent\", \"search pirate bay\", \"get a magnet link\", \"download torrent\", \"find seeders\", \"top torrents\", or any torrent search task. Can operate via CLI tool or direct API calls.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

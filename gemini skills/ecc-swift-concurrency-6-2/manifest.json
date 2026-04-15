@@ -1,0 +1,6 @@
+{
+  "name": "swift-concurrency-6-2",
+  "description": "Swift 6.2 可接近的并发性 — 默认单线程，@concurrent 用于显式后台卸载，隔离一致性用于主 actor 类型。",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "helm-generator",
+  "description": "Create, scaffold, or generate Helm charts, Chart.yaml, values.yaml, templates, helpers.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

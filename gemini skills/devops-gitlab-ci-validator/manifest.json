@@ -1,0 +1,6 @@
+{
+  "name": "gitlab-ci-validator",
+  "description": "Validate, lint, audit, or fix .gitlab-ci.yml pipelines, stages, and jobs.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

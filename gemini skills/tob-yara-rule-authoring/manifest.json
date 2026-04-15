@@ -1,0 +1,6 @@
+{
+  "name": "yara-rule-authoring",
+  "description": ">",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

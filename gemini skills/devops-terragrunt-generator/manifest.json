@@ -1,0 +1,6 @@
+{
+  "name": "terragrunt-generator",
+  "description": "Generate/create/scaffold Terragrunt HCL files — root.hcl, terragrunt.hcl, child modules, stacks, multi-env layouts.",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

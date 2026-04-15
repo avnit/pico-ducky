@@ -1,0 +1,6 @@
+{
+  "name": "security-scan",
+  "description": "AgentShield を使用して、Gemini Code の設定（.gemini/ ディレクトリ）のセキュリティ脆弱性、設定ミス、インジェクションリスクをスキャンします。GEMINI.md、settings.json、MCP サーバー、フック、エージェント定義をチェックします。",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}

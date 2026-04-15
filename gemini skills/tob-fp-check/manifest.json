@@ -1,0 +1,6 @@
+{
+  "name": "fp-check",
+  "description": "\"Systematically verifies suspected security bugs to eliminate false positives. Produces TRUE POSITIVE or FALSE POSITIVE verdicts with documented evidence for each bug.\"",
+  "skill_file": "SKILL.md",
+  "source": "gemini skills"
+}
