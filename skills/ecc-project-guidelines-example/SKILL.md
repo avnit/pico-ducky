@@ -1,3 +1,8 @@
+---
+name: ecc-project-guidelines-example
+description: Example template for a project-specific guidelines skill, covering architecture overview, file structure, code patterns, testing requirements, and deployment workflow. Copy and adapt it as a starting point for your own per-project skill.
+---
+
 # プロジェクトガイドラインスキル（例）
 
 これはプロジェクト固有のスキルの例です。自分のプロジェクトのテンプレートとして使用してください。
