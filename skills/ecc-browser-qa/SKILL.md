@@ -1,3 +1,8 @@
+---
+name: ecc-browser-qa
+description: Automated browser-based visual and interaction QA. Drives a real browser (Playwright, Puppeteer, or the claude-in-chrome MCP) like a user to smoke-test deployed pages, catch console and 4xx/5xx network errors, verify layout, forms and interactions, and run responsive and accessibility checks. Use after deploying to staging/preview or when reviewing front-end PRs.
+---
+
 # Browser QA — 自动化视觉测试与交互验证
 
 ## When to use
